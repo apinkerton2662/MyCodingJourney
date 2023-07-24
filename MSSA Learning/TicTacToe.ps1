@@ -21,10 +21,12 @@ function DisplayBoard {
     Write-Host "---+---+---"
     Write-Host
 }
-$CurrentPlayer = 'X','O' | Get-Random
-$GameOver = $false
-[System.Collections.ArrayList]$T3Board = @(1..9)
+
 do{
+  $CurrentPlayer = 'X','O' | Get-Random
+  $GameOver = $false
+  $Draw = $false
+  [System.Collections.ArrayList]$T3Board = @(1..9)
   do {
     Clear-Host
     DisplayBoard -Board $T3Board
@@ -54,7 +56,12 @@ do{
       if ($PositionValues.count -eq 1) {
         $GameOver = $true
         break
-      }
+      } 
+    }
+    if ($GameOver -eq $false -and ($T3Board | Select-Object -Unique).count -eq 2) {
+      $Draw = $true
+      $GameOver = $true
+      break
     }
     if ($GameOver -eq $false) {
       if ($CurrentPlayer -eq 'X') {$CurrentPlayer = 'O'}
@@ -62,8 +69,15 @@ do{
   }
     # check game state win lose draw
     # Win = 3 in a row, col, diag
-  } until ($GameOver -eq $true)
+  } until ($GameOver -eq $true -or $Draw -eq $true)
   DisplayBoard -Board $T3Board
-  Write-Host "$CurrentPlayer, you are the winner"
+  if ($GameOver -eq $true -and $Draw -eq $false) {
+    Write-Host "$CurrentPlayer, you are the winner"
+  } elseif ($Draw -eq $true) {
+    Write-Host "It is a draw"
+  }
+  $Again = Read-Host -Prompt 'Do you want to play again (Yes/No)'
+  if ($Again -like 'y*') {$KeepPlaying = $true}
+  else {$KeepPlaying = $false}
   # check for play again and then reset board
-} while ($KeepPlaying)
+} while ($KeepPlaying -eq $true)
