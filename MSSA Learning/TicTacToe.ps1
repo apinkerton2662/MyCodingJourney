@@ -6,8 +6,8 @@
 #  4 | 5 | 6
 # ---+---+---
 #  7 | 8 | 9
-
-
+[CmdletBinding()]
+Param ()
 function DisplayBoard {
   param ($Board)
   # print board on screen
@@ -28,7 +28,6 @@ do{
   $Draw = $false
   [System.Collections.ArrayList]$T3Board = @(1..9)
   do {
-    Clear-Host
     DisplayBoard -Board $T3Board
     do {
       $Choice = Read-Host -Prompt "Player $CurrentPlayer, please select a grid"
@@ -38,8 +37,10 @@ do{
       if ($T3Board -contains $Choice -and $GoodSpots -contains $Choice) {$TryAgain = $false}
       else {$TryAgain = $true}
     } while ($TryAgain -eq $true)
-    # change board to reflect choice
+    Write-Verbose "the board before the change $T3Board"
     $T3Board[$Choice - 1] = $CurrentPlayer
+    Write-Verbose "the board after the change $T3Board"
+    Write-Debug "this is the board just after the change"
 
     $WinningLines = @(
       @(0,1,2),
@@ -53,6 +54,7 @@ do{
     )
     foreach ($W in $WinningLines) {
       $PositionValues = ($T3Board[$W] | Select-Object -Unique)
+      Write-Verbose "the value from the winning line $T3Board"
       if ($PositionValues.count -eq 1) {
         $GameOver = $true
         break
