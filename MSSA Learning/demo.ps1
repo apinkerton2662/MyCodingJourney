@@ -1,0 +1,1 @@
+New-ModuleManifest -Path .\MathTools.psd1 -ModuleVersion '1.0.5' -RootModule .\MathTools.psm1 -Author 'Alex Pinkerton' -Description 'Give some math tools' -FunctionsToExport Get-Addition, Get-Multiplication, Get-Division
