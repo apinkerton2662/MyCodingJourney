@@ -24,4 +24,5 @@ Get-CimInstance -ClassName Win32_BIOS | Select-Object -Property BIOSVersion, Rel
 # The EventID and how long ago the entries were geneated in minutes
 Get-Command *log*
 Show-Eventlog -ComputerName LON-CL1
-Get-Help
+Get-Help Get-WinEvent -ShowWindow
+Get-WinEvent -LogName System -MaxEvents 4
