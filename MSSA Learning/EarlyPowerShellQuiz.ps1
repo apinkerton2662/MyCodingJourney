@@ -44,4 +44,82 @@ Get-Help Get-Process -showwindow
 # -Id (ByProperty)
 # -InputObject (ByValue)
 # -Name (ByProperty)
-# This i
+
+# Q2.3 Determine how many different ways this cmdlet can be run we call it "parameter sets"
+
+# This cmdlet can be run in 6 parameter sets
+
+# Q2.4 Find an example in the help that shows processes with a working set greater than a specified size
+
+# Example 3: Get all processes with a working set greater than a specified size Get-Process | Where-Object {$_.WorkingSet -gt 20000000}
+
+
+# 3 Discovering what is the output/result of running a cmdlet using Get-Member
+
+# Find what object is created when you run the Get-Service cmdlet
+
+# Q3.1 What is the name of the object that is the result/output of the cmdlet
+
+Get-Service | Get-Member
+# System.Service.ServiceController
+
+# Q3.2 What Properties are available in the Object produced by this cmdlet
+
+Get-Service | Get-Member
+# BinaryPathName            Property      System.String {get;set;}
+# CanPauseAndContinue       Property      bool CanPauseAndContinue {get;}        
+# CanShutdown               Property      bool CanShutdown {get;}
+# CanStop                   Property      bool CanStop {get;}
+# Container                 Property      System.ComponentModel.IContainer Cont… 
+# DelayedAutoStart          Property      System.Boolean {get;set;}
+# DependentServices         Property      System.ServiceProcess.ServiceControll… 
+# Description               Property      System.String {get;set;}
+# DisplayName               Property      string DisplayName {get;set;}
+# MachineName               Property      string MachineName {get;set;}
+# ServiceHandle             Property      System.Runtime.InteropServices.SafeHa… 
+# ServiceName               Property      string ServiceName {get;set;}
+# ServicesDependedOn        Property      System.ServiceProcess.ServiceControll… 
+# ServiceType               Property      System.ServiceProcess.ServiceType Ser… 
+# Site                      Property      System.ComponentModel.ISite Site {get… 
+# StartType                 Property      System.ServiceProcess.ServiceStartMod… 
+# StartupType               Property      Microsoft.PowerShell.Commands.Service… 
+# Status                    Property      System.ServiceProcess.ServiceControll… 
+# UserName                  Property      System.String {get;set;}
+
+# Q3.3 What Methods are available in the Object produced by this cmdlet
+
+# Close                     Method        void Close()
+# Continue                  Method        void Continue()
+# Dispose                   Method        void Dispose(), void IDisposable.Disp… 
+# Equals                    Method        bool Equals(System.Object obj)
+# ExecuteCommand            Method        void ExecuteCommand(int command)       
+# GetHashCode               Method        int GetHashCode()
+# GetLifetimeService        Method        System.Object GetLifetimeService()     
+# GetType                   Method        type GetType()
+# InitializeLifetimeService Method        System.Object InitializeLifetimeServi… 
+# Pause                     Method        void Pause()
+# Refresh                   Method        void Refresh()
+# Start                     Method        void Start(), void Start(string[] arg… 
+# Stop                      Method        void Stop(), void Stop(bool stopDepen… 
+# WaitForStatus             Method        void WaitForStatus(System.ServiceProc…
+
+# Q3.4 Find the object types that are contained within the following properties: Name, DisplayName, CanStop, Status
+
+Get-service | Get-Member
+
+# Name - Alias Property for ServiceName = string
+# DisplayName string
+# CanStop bool
+# Status ServiceControllerStatus Object
+
+# 4 Discovering Modules
+# Q4.1 List all of the modules that are available
+get-module -ListAvailable
+
+# Q4.2 From the results of the previous command what folders are the modules found in
+get-help *psmodule*
+$env:PSModulePath
+
+# Q4.3 What command would you use to install the module "SubnetTools" from the PowerShell Gallery
+
+Install-Module -Name SubnetTools
