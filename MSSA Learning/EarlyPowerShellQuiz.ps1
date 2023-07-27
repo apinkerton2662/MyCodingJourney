@@ -22,7 +22,27 @@ Get-CimInstance -ClassName Win32_BIOS | Select-Object -Property BIOSVersion, Rel
 
 # Q1.3 Write a pipeline that shows the four most recent System event log entries and only shows the following
 # The EventID and how long ago the entries were geneated in minutes
-Get-Command *log*
-Show-Eventlog -ComputerName LON-CL1
+Get-Command *log
+Show-Eventlog -ComputerName 'LON-CL1'
 Get-Help Get-WinEvent -ShowWindow
 Get-WinEvent -LogName System -MaxEvents 4
+Get-WinEvent -LogName System -MaxEvents 4 | Select-Object -Property *
+# Answer
+Get-WinEvent -LogName System -MaxEvents 4 | Select-Object -Property ID, @{Name = "MinutesAgo"; Expression = { ((Get-Date) - $_.TimeCreated).minutes } }
+
+# 2 Using Help
+# Open the full help page for the cmdlet Get-Process to answer the following questions
+# Q2.1 Determine what type of object can the ComputerName parameter accept
+
+Get-Help Get-Process -showwindow
+
+# ComputerName accepts system.string[] 
+
+# Q2.2 Determine which parameters can accept pipeline input and take note of the pipeline method
+
+# -ComputerName (ByProperty)
+# -Id (ByProperty)
+# -InputObject (ByValue)
+# -Name (ByProperty)
+
+
