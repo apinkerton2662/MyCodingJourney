@@ -5,14 +5,14 @@
 # Properties to show Status, StartType, Name, DisplayName
 
 Get-Service | Select-Object Status, StartType, Name, Displayname
-Get-Service | Where-Object Status -eq 'Running' | Sort-Object -Property StartType, Name
+Get-Service | Where-Object Status -EQ 'Running' | Sort-Object -Property StartType, Name
 # Answer
 Get-Service | Where-Object { $_.Status -eq 'Running' } | Sort-Object -Property StartType, Name | Select-Object -Property Status, StartType, Name, DisplayName
 
 # Q1.2 Write a pipeline that will show the some properties of the BIOS information using a CimInstance command
 # Show the following properties: BIOSVersion,ReleaseDate
-get-command *cim*
-get-help Get-CimInstance -showwindow
+Get-Command *cim*
+Get-Help Get-CimInstance -ShowWindow
 Get-CimInstance CIM_BIOSElement | Format-List
 Get-CimInstance CIM_BIOSElement | Get-Member
 # Guess
@@ -23,7 +23,7 @@ Get-CimInstance -ClassName Win32_BIOS | Select-Object -Property BIOSVersion, Rel
 # Q1.3 Write a pipeline that shows the four most recent System event log entries and only shows the following
 # The EventID and how long ago the entries were geneated in minutes
 Get-Command *log
-Show-Eventlog -ComputerName 'LON-CL1'
+Show-EventLog -ComputerName 'LON-CL1'
 Get-Help Get-WinEvent -ShowWindow
 Get-WinEvent -LogName System -MaxEvents 4
 Get-WinEvent -LogName System -MaxEvents 4 | Select-Object -Property *
@@ -34,7 +34,7 @@ Get-WinEvent -LogName System -MaxEvents 4 | Select-Object -Property ID, @{Name =
 # Open the full help page for the cmdlet Get-Process to answer the following questions
 # Q2.1 Determine what type of object can the ComputerName parameter accept
 
-Get-Help Get-Process -showwindow
+Get-Help Get-Process -ShowWindow
 
 # ComputerName accepts system.string[] 
 
@@ -105,7 +105,7 @@ Get-Service | Get-Member
 
 # Q3.4 Find the object types that are contained within the following properties: Name, DisplayName, CanStop, Status
 
-Get-service | Get-Member
+Get-Service | Get-Member
 
 # Name - Alias Property for ServiceName = string
 # DisplayName string
@@ -114,10 +114,10 @@ Get-service | Get-Member
 
 # 4 Discovering Modules
 # Q4.1 List all of the modules that are available
-get-module -ListAvailable
+Get-Module -ListAvailable
 
 # Q4.2 From the results of the previous command what folders are the modules found in
-get-help *psmodule*
+Get-Help *psmodule*
 $env:PSModulePath
 
 # Q4.3 What command would you use to install the module "SubnetTools" from the PowerShell Gallery

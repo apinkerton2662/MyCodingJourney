@@ -9,13 +9,14 @@
 # Compare it to an uppercase variant
 # If it is the same - change to lower
 # If it is different - change it to upper
+Get-Help | Get-Member
 
 function ReverseCase {
   Param ([string]$InitialString)
   [string]$RevCaseString = ''
   0..($InitialString.length - 1) | ForEach-Object {
-    if ($InitialString[$_].ToString().ToUpper() -ceq $InitialString[$_].ToString()) {$RevCaseString += $InitialString[$_].ToString().ToLower()}
-    else {$RevCaseString += $InitialString[$_].ToString().ToUpper()}
+    if ($InitialString[$_].ToString().ToUpper() -ceq $InitialString[$_].ToString()) { $RevCaseString += $InitialString[$_].ToString().ToLower() }
+    else { $RevCaseString += $InitialString[$_].ToString().ToUpper() }
   }
   return $RevCaseString
 }
