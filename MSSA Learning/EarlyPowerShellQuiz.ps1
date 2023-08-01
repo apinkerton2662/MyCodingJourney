@@ -3,7 +3,6 @@
 
 # Q1 Write a pipeline that displays all running services and show the following properties sorted by the StartType and then by Name
 # Properties to show Status, StartType, Name, DisplayName
-
 Get-Service | Select-Object Status, StartType, Name, Displayname
 Get-Service | Where-Object Status -EQ 'Running' | Sort-Object -Property StartType, Name
 # Answer
