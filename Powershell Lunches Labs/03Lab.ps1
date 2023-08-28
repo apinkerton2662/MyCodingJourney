@@ -40,4 +40,6 @@ Get-Process -Name Process
 Get-Process -Name pwsh -IncludeUserName
 
 # 10
-
+Get-Command -Verb Invoke
+Get-Help Invoke-Command -ShowWindow 
+Invoke-Command
