@@ -1,0 +1,8 @@
+Bash Commands I found useful for Azure
+
+Review your subscription
+az account list
+
+Review your Resource Group Information
+az resource list
+
