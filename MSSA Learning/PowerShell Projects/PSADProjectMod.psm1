@@ -82,10 +82,6 @@ function Restore-DeletedADObject {
   .EXAMPLE
     Restore-DeletedADObject
     This will present a list of deleted users for selection to resore them to AD
-  .NOTES
-    General notes
-      Created By: Brent Denny
-      Created On: 01-Feb-2022
   #>
   # Find all of the deleted objects in AD  
   $DeletedObjects = Get-ADObject -LDAPFilter:"(msDS-LastKnownRDN=*)" -IncludeDeletedObjects | Where-Object { $_.Deleted -eq $true }
@@ -110,10 +106,7 @@ function Find-AssociatedGroupMembership {
     This command will find all related groups given a users samaccountname
   .PARAMETER SamAccountName
     This is the SamAccountName that is associated with the use in question  
-  .NOTES
-    General notes
-      Created By: Brent Denny
-      Created On: 01-Feb-2022
+
   #>
   Param ($SamAccountName)
   function Get-MemberOf {
