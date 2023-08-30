@@ -1,13 +1,23 @@
-<# PowerShell Active Directory Project 4 #>
-# Run the following before starting
+<# 
+This is the fourth of four PowerShell Active Directory Challenges.
+In this challenge, you must create a function that accomplishes the following:
 
-$SalesUsers = Get-ADUser -filter {Department -eq 'Sales'} -Properties Department
-$ADDisabledOU = if (-not (Test-Path 'AD:\OU=DisabledUsers,DC=Adatum,DC=com')) {New-ADOrganizationalUnit   -Path 'DC=adatum,DC=com' -Name DisabledUsers} 
+Use the E:\DisableList.csv to find and disable the users in the list
+When disabling the users do all of the following:
+Modify the Users "Info" attribute to include the original DN of the user
+"CN=Brian Ferry,OU=Sales,DC=Adatum,DC=com was the original DN"
+Disable the Account
+Change the password to a random password with 1 number, 7 lowercase, 3 uppercase characters
+Move the diabled account to the OU called "DisabledUsers"
+#>
+
+$SalesUsers = Get-ADUser -Filter { Department -eq 'Sales' } -Properties Department
+$ADDisabledOU = if (-not (Test-Path 'AD:\OU=DisabledUsers,DC=Adatum,DC=com')) { New-ADOrganizationalUnit   -Path 'DC=adatum,DC=com' -Name DisabledUsers } 
 $UsersToDisable = $SalesUsers | Get-Random -Count 5
 $UsersToDisable | 
-   Select-Object -Property Name, Department | 
-   ConvertTo-Csv -NoTypeInformation |
-   Out-File e:\DisableList.csv -Force
+  Select-Object -Property Name, Department | 
+  ConvertTo-Csv -NoTypeInformation |
+  Out-File e:\DisableList.csv -Force
 
 
 function New-Password {
@@ -48,9 +58,9 @@ function Disable-ADUsersCSV {
     $NewPass = ConvertTo-SecureString (New-Password) -AsPlainText -Force
     $User = Get-ADUser -Filter { Name -eq $Name -and Department -eq $Dep }
     Set-ADUser -Identity $User -Replace @{info = $User.DistinguishedName + " was the original DN" }
-    Set-ADAccountPassword -identity $User -Reset -NewPassword $NewPass
-    Disable-ADAccount -identity $User
-    Move-ADObject -identity $User -TargetPath "OU=DisabledUsers,DC=Adatum,DC=Com"
+    Set-ADAccountPassword -Identity $User -Reset -NewPassword $NewPass
+    Disable-ADAccount -Identity $User
+    Move-ADObject -Identity $User -TargetPath "OU=DisabledUsers,DC=Adatum,DC=Com"
   }
 }
 
@@ -59,5 +69,3 @@ Disable-aduserscsv -filename $Filename
 
 Get-ADUser -SearchBase "OU=DisabledUsers,DC=Adatum,DC=com"
 
-
-$NewPass = New-Password | ConvertTo-SecureString

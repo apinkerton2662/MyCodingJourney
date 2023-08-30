@@ -1,17 +1,21 @@
+<# 
+This is the second of four PowerShell Active Directory Challenges.
+In this challenge, you must create a function that accomplishes the following:
+
+Recover deleted user from Domain Controller Recycle-Bin
+Write a function that does the following:
+Lists all deleted object using Out-Gridview
+Allows someone to choose which deleted user/s are to be restored
+Restore the chosen user/s
+Show the restored AD object on screen to prove restoration was successful
+Add this function to the previous module from Project 1
+#>
 function Restore-DeletedADObject {
   <#
   .SYNOPSIS
-    This command will restore AD users from the AD Recycle bin
+    Restores selected users from AD Recycle-Bin
   .DESCRIPTION
-    This command will check for all deleted users and list them in a GUI, allowing the users that 
-    need to be restored to be slected and then automatically restored to AD
-  .EXAMPLE
-    Restore-DeletedADObject
-    This will present a list of deleted users for selection to resore them to AD
-  .NOTES
-    General notes
-      Created By: Brent Denny
-      Created On: 01-Feb-2022
+    This command will scan the AD Recycle Bin, show the user a list of deleted users, and restore the selected users.
   #>
   # Find all of the deleted objects in AD  
   $DeletedObjects = Get-ADObject -LDAPFilter:"(msDS-LastKnownRDN=*)" -IncludeDeletedObjects | Where-Object { $_.Deleted -eq $true }
