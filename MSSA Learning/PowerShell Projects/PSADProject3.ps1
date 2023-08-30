@@ -37,26 +37,35 @@ Add-ADGroupMember -Identity MktgAdmin -Members (Get-ADUser -Filter * | Where-Obj
 Add-ADGroupMember -Identity DevAdmin -Members (Get-ADUser -Filter * | Where-Object {$_.SamAccountname -in ('Jasper','Margret','Jodie')})
 #>
 
-# Get user groups with samaccountname
-$user = Get-ADUser -Identity Jasper
-$GroupList = $T1Groups | Select-Object Name, GroupScope
-$T1Groups = Get-ADPrincipalGroupMembership -Identity $user
+<# Create a function that achieves the following:
+Given a user's SamAccountName, list all their related groups (immediate and nested groups)
+#>
 
-$GroupList = $T1Groups
-$GroupList
-# for each group, find groups for group, etc etc.
-
-$T2Groups = foreach ($T in $T1Groups) {
-  Get-ADPrincipalGroupMembership -Identity $T
-}
-
-function Resolve-GroupMembership {
-  param (
-    $user
-  )
-
-  Get-ADPrincipalGroupMembership -Identity $user | ForEach-Object {
-    If ($_.)
-  }
+function Get-RecursiveGroupList {
+  <#
+  .SYNOPSIS
+    Retrieves the immediate and nested groups of a user.
+  .DESCRIPTION
+    Accepts an SamAccountName and recursively searches for groups within groups.  Displays the results.
+  .NOTES
+    Function created for PowerShell Project 3
+  .PARAMETER User
+    This is the SamAccountname of the user you wish to look up.  
+  #>
   
+  
+  param ($User)
+  function Get-ADSubGroups {
+    param ($Identity)
+    $Groups = Get-ADPrincipalGroupMembership -Identity $Identity
+    foreach ($G in $Groups) {
+      Get-ADSubGroups -Identity $Identity
+    }
+  }
+  $UserSAN = Get-ADUser -Identity $User
+  Get-ADSubGroups -Identity $UserSAN
 }
+
+Get-RecursiveGroupList -User Jasper 
+
+$Groups
