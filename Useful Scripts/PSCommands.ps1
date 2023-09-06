@@ -56,3 +56,11 @@ $publicIp | Select-Object Name, IpAddress, @{n = 'FQDN'; e = { $_.DnsSettings.Fq
 # Create a data disk and add to VM
 Add-AzVMDataDisk -VM $newVM1 -Name "disk1" -LUN 0 -Caching ReadOnly -DiskSizeinGB 1 -CreateOption Empty
 Update-AzVM -ResourceGroupName ResourceGroup1 -VM $newVM1
+
+# Install AD DS and DNS on current computer
+Install-WindowsFeature -Name AD-Domain-Services,DNS -IncludeManagementTools
+
+# Steps to format a new attached disk
+Get-Disk | Where PartitionStyle -eq 'RAW' | Initialize-Disk -PartitionStyle MBR
+
+
